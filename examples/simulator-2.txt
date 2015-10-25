@@ -1,0 +1,12 @@
+# replicates construction from Lemma 4.1, with k = 1.
+# expecting terminal poly of length 2^2k + 1 = 5
+
+# initiator
+(30, 12)(22*, 30*)
+
+# i = j = 2
+(12*, 21*, 11, 22)+
+
+# i = 1
+(20*, 30*, 21, 10)-
+(20*, 11*, 30, 10)-
