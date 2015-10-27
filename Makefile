@@ -1,3 +1,7 @@
+# Makefile for insertion system simulation programs related to:
+# B. Hescott, C. Malchik, A. Winslow, 
+# "Tight bounds for active self-assembly using an insertion primitive",
+# http://arxiv.org/abs/1401.0359
 
 CC=clang
 CPP=clang++
@@ -10,16 +14,16 @@ simulator: simulator.cpp
 	$(CPP) $(CFLAGS) simulator.cpp -o simulator
 
 # Grammar and pair (symbol) grammar classes 
-grammar.o: grammar.c grammar.h
-	$(CC) $(CFLAGS) -c grammar.c -o grammar.o
+grammar.o: grammar.cpp grammar.h
+	$(CPP) $(CFLAGS) -c grammar.cpp -o grammar.o
 
 pairgrammar.o: pairgrammar.c pairgrammar.h
 	$(CC) $(CFLAGS) -c pairgrammar.c -o pairgrammar.o
 
 # Programs for converting grammars to pair grammars (g2pg) 
 # and pair grammars to insertion systems (pg2is) as in the paper.
-g2pg: g2pg.c grammar.o
-	$(CC) $(CFLAGS) -o g2pg g2pg.c grammar.o
+g2pg: g2pg.cpp grammar.o
+	$(CPP) $(CFLAGS) -o g2pg g2pg.cpp grammar.o
 
 pg2is: pg2is.c pairgrammar.o
 	$(CC) $(CFLAGS) -o pg2is pg2is.c pairgrammar.o
@@ -41,7 +45,6 @@ nondetermfastis: nondetermfastis.c
 clean:
 	rm -f ./*.o
 	rm -f ./simulator
-	rm -f ./generator
 	rm -f ./pg2is	
 	rm -f ./g2pg
 	rm -f ./fastgrowingpg

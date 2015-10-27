@@ -1,7 +1,10 @@
 
-#include <stdbool.h>
+#ifndef GRAMMAR_H
+#define GRAMMAR_H
 
-#define MAX_GRAMMAR_RULES 1000
+#include <vector>
+
+using std::vector;
 
 typedef struct {
         bool is_terminal;
@@ -10,16 +13,25 @@ typedef struct {
 	char rhsTerm;
 } Rule;
 
-typedef struct {
-        bool has_start;
-       	int start;
-        Rule rules[MAX_GRAMMAR_RULES];
-        unsigned int rule_count;
-} Grammar;
+class Grammar {
 
+	public:
+		Grammar();
+		int start();
+		bool has_start();	
+		bool is_valid();
+		void set_start(int n);
+		void add_rule(Rule r);
+		void normalize();
+		void print_pg();
+		void print_grammar();
+		void print_pairgrammar();
+	
+	private:
+		int _start;	
+		bool _has_start;
+		vector<Rule> rules;
+};
 
-bool grammar_is_valid(Grammar* pg);
-void initialize_grammar(Grammar* pg);
-void add_rule_to_grammar(Rule r, Grammar* pg);
-void set_start(int n, Grammar* pg);
+#endif
 
