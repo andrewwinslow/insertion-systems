@@ -1,3 +1,4 @@
+# Should do nothing, since initiator is locked
 (1, 2) (2*, 1*)
 (40, 1*, 1, 2)-
 (2*, 3, 4, 2)+

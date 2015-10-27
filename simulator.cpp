@@ -14,25 +14,20 @@ using std::string;
 using std::stack;
 using std::vector;
 
-int max = 0;
-
-typedef struct
-{
+typedef struct {
 	int a, b, c, d;
 	char p;
 } MonomerType;
 
 typedef struct Monomer Monomer;
 
-struct Monomer 
-{
+struct Monomer {
 	MonomerType type;
 	Monomer* prev;
 	Monomer* next;
 };
 
-typedef struct
-{
+typedef struct {
 	Monomer* monomer;
 	int type;
 } Insertion;
@@ -50,12 +45,11 @@ static bool vflag = false; /* verbose flag (print each insertion) */
 void print_monomer(MonomerType monomer, bool sign);
 
 // inserts after
-void insert_monomer(MonomerType t, Monomer* loc)
-{
+void insert_monomer(MonomerType t, Monomer* loc) {
 	if(vflag) {
-		cout << "inserting ";
+		cout << "Inserting ";
 		print_monomer(t, true);
-		cout << " into ";
+		cout << " into site ";
 		print_monomer(loc->type, false);
 		print_monomer(loc->next->type, false);
 		cout << std::endl;
@@ -72,8 +66,7 @@ void insert_monomer(MonomerType t, Monomer* loc)
 	++polymer_size;
 }
 
-void remove_monomer(Monomer* mon)
-{
+void remove_monomer(Monomer* mon) {
 	Monomer* prev = mon->prev;
 	Monomer* next = mon->next;
 	prev->next = next;
@@ -84,46 +77,42 @@ void remove_monomer(Monomer* mon)
 	--polymer_size;
 }
 
-bool monomers_equal(MonomerType m1, MonomerType m2)
-{
+bool monomers_equal(MonomerType m1, MonomerType m2) {
 	return (m1.a == m2.a && m1.b == m2.b && m1.c == m2.c && m1.d == m2.d && m1.p == m2.p);
 }
 
-int abs(int n)
-{
+int abs(int n) {
 	return n < 0 ? -n : n;
 }
 
-int desanitize(int n)
-{
+int desanitize(int n) {
 	if (n == INT_MAX || n == -INT_MAX)
 		return 0;
 	return abs(n);
 }
 
-int sanitize(int n, bool c)
-{
+int sanitize(int n, bool c) {
 	if (n != 0)
 		return c ? -n : n;
 	return (c ? -INT_MAX : INT_MAX);
 }
 
-void print_monomer_rh(MonomerType monomer)
-{
+void print_monomer_rh(MonomerType monomer) {
 	cout << "(" << desanitize(monomer.c) << (monomer.c < 0 ? "*, " : ", ") << desanitize(monomer.d) << (monomer.d < 0 ? "*" : "") << ")"; 
 }
 
-void print_monomer_lh(MonomerType monomer)
-{
+void print_monomer_lh(MonomerType monomer) {
 	cout << "(" << desanitize(monomer.a) << (monomer.a < 0 ? "*, " : ", ") << desanitize(monomer.b) << (monomer.b < 0 ? "*" : "") << ")"; 
 }
 
-void print_monomer(MonomerType monomer, bool sign)
-{
+void print_monomer(MonomerType monomer, bool sign) {
+	// Naming: left hand init monomer is printed by
+	// printing its right two symbols, 
+	// so currently rh is called, etc.
 	if(monomer.p == 'l')
-		return print_monomer_rh(monomer); // naming: left hand init monomer is printed by
-	if(monomer.p == 'r')                  //         printing its right two symbols, so
-		return print_monomer_lh(monomer); //         currently rh is called, etc.
+		return print_monomer_rh(monomer); 
+	if(monomer.p == 'r')                      
+		return print_monomer_lh(monomer); 
 
 	cout << "(" << desanitize(monomer.a) << (monomer.a < 0 ? "*" : "") << ", " 
 		<< desanitize(monomer.b) << (monomer.b < 0 ? "*" : "") << ", "
@@ -132,32 +121,30 @@ void print_monomer(MonomerType monomer, bool sign)
 		<< (sign ? (monomer.p == '+' ? "+" : "-") : "");
 }
 
-bool insertable(MonomerType inserted, Monomer* loc)
-{
+// Tests whether a monomer type "inserted" is insertable into a site
+// specified by the left monomer "loc" of the site. 
+bool insertable(MonomerType inserted, Monomer* loc) {
 	MonomerType left_mon = loc->type;
 	MonomerType right_mon = loc->next->type;
 
+	// For definitions of these rules, see Definitions section of http://arxiv.org/abs/1401.0359
 	if (inserted.p == '+')
-		return (left_mon.d == -inserted.a) && (-inserted.d == right_mon.a) && (left_mon.c == -right_mon.b); 
+		return (left_mon.d == -inserted.a) && (-inserted.d == right_mon.a) 
+			&& (left_mon.c == -right_mon.b) && (left_mon.d != -right_mon.a); 
 	if (inserted.p == '-')
-		return (left_mon.c == -inserted.b) && (-inserted.c == right_mon.b) && (left_mon.d == -right_mon.a); 
+		return (left_mon.c == -inserted.b) && (-inserted.c == right_mon.b) 
+			&& (left_mon.d == -right_mon.a) && (left_mon.c != -right_mon.b);
 	return false;
 }
 
-void print_polymer()
-{
+void print_polymer() {
 	if(sflag) {
-		if (polymer_size > max) {
-			cout << "Polymer size: " << polymer_size << std::endl; 
-			max = polymer_size;
-		}
+		cout << "Polymer size: " << polymer_size << std::endl; 
 		return;
 	}
 
 	Monomer* cur = polymer;
-	while (cur != NULL)
-	{
-
+	while (cur != NULL) {
 		if (cur->prev == NULL)
 			print_monomer_rh(cur->type);
 		else if (cur->next == NULL)
@@ -171,20 +158,17 @@ void print_polymer()
 	cout << std::endl;
 }		
 
-void simulate()
-{
+void simulate() {
 	Insertion insert;
 	Monomer* site = polymer;
 	int type = 0;
 	bool site_insertable = false;
 
-	while (insertions.size() != 0 || type < monomer_types.size())
-	{	
+	while (insertions.size() != 0 || type < monomer_types.size()) {	
 		// if you've reached the end
-		if (site->next == NULL)
-		{
+		if (site->next == NULL) {
 			if(vflag)
-				cout << "terminal polymer: \n";
+				cout << "Terminal polymer: \n";
 			// print the polymer and pop the stack
 			print_polymer();
 			if(vflag)
@@ -198,10 +182,8 @@ void simulate()
 		}
 		
 		// roll over to next site
-		if (type == monomer_types.size())
-		{
-			if (site_insertable)
-			{
+		if (type == monomer_types.size()) {
+			if (site_insertable) {
 				// pop the stack
 				site = insertions.top().monomer->prev;
 				type = insertions.top().type+1;
@@ -209,8 +191,7 @@ void simulate()
 				insertions.pop();					
 				site_insertable = true;
 			}
-			else
-			{
+			else {
 				// continue on to the next site
 				type = 0;
 				site = site->next;	
@@ -221,8 +202,7 @@ void simulate()
 
 		// the usual case: try to insert the monomer,
 		// if insertion isn't possible, go to the next monomer
-		if (insertable(monomer_types[type], site))
-		{
+		if (insertable(monomer_types[type], site)) {
 			insert_monomer(monomer_types[type], site);
 			insert.monomer = site->next;
 			insert.type = type;
@@ -237,19 +217,11 @@ void simulate()
 }
    
  
-int main(int argc, char *argv[])
-{
-	polymer_size = 0;
-
-	MonomerType m;
-	int n;
-	bool c;
-
-	// thanks K&R (1988 p.106)
-	char a;
-	while (--argc > 0 && (*++argv)[0] == '-')
-		while ((a = *++argv[0]))
-			switch (a) {
+int main(int argc, char *argv[]) {
+	// Parse command line arguments
+	for (int i = 1; i < argc; ++i) {
+		if (argv[i][0] == '-') {
+			switch (argv[i][1]) {
 			case 's':
 				sflag = true;
 				break;
@@ -257,66 +229,63 @@ int main(int argc, char *argv[])
 				vflag = true;
 				break;
 			default:
-				cout << "illegal option " << a << std::endl;
-				break;
+				cout << "Error: illegal option '" << argv[i] << "'" << std::endl;
+				return EXIT_FAILURE;			
 			}
+		}
+	}	
 
-	while (cin)
-	{
+	// Parse piped input
+	polymer_size = 0;
+	MonomerType m;
+	int n;
+	bool c;
+	while (cin) {
 		cin >> std::ws;
-		if (cin.peek() == '#')
-		{
+		if (cin.peek() == '#') {
 			cin.ignore(1000, '\n');
 			continue;
 		}
 		if (cin.peek() == EOF)
 			break;
 	
-		if (cin.peek() != '(' || !(cin.ignore()))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '('.\n";
+		if (cin.peek() != '(' || !(cin.ignore())) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '('.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
-		if (!(cin >> n))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected an integer.\n";
+		if (!(cin >> n)) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected an integer.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
 		c = (cin.peek() == '*');
-		if (cin.peek() == '*')
-		{
+		if (cin.peek() == '*') {
 			cin.ignore();
 			cin >> std::ws;
 		}
 		m.a = sanitize(n, c);
 
-		if (cin.peek() != ',' || !(cin.ignore()))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '*' or ','.\n";
+		if (cin.peek() != ',' || !(cin.ignore())) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '*' or ','.\n";
 			return EXIT_FAILURE;	
 		}
 		cin >> std::ws;
-		if (!(cin >> n))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected an integer.\n";
+		if (!(cin >> n)) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected an integer.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
 		c = (cin.peek() == '*');
-		if (cin.peek() == '*')
-		{
+		if (cin.peek() == '*') {
 			cin.ignore();
 			cin >> std::ws;
 		}
 		m.b = sanitize(n, c);
 
-		if (cin.peek() == ')')
-		{
+		if (cin.peek() == ')') {
 			cin.ignore();
-			if (polymer_size == 0)
-			{
+			if (polymer_size == 0) {
 				polymer = (Monomer*) malloc(sizeof(Monomer));
 				polymer->prev = polymer->next = NULL;
 				++polymer_size;
@@ -326,8 +295,7 @@ int main(int argc, char *argv[])
 				m.p = 'l'; /* left initiator monomer */
 				polymer->type = m;
 			}
-			else if (polymer_size == 1)
-			{
+			else if (polymer_size == 1) {
 				polymer->next = (Monomer*) malloc(sizeof(Monomer));
 				polymer->next->prev = polymer;
 				polymer->next->next = NULL;
@@ -335,64 +303,61 @@ int main(int argc, char *argv[])
 				m.c = m.d = 0;
 				m.p = 'r'; /* right initiator monomer */
 				polymer->next->type = m;
+
+				// Check that initiator has matching symbols
+				if (polymer->type.c != -polymer->next->type.b && polymer->type.d != -polymer->next->type.a) {
+					cerr << "Error: initiator has no bond." << std::endl;	
+					return EXIT_FAILURE;
+				}
 			}
-			else if (polymer_size == 2)
-			{
+			else if (polymer_size == 2) {
 				cerr << "Error: more than two initiator halves specified.\n";
 				return EXIT_FAILURE;
 			}
 			continue;
 		}
-		if (cin.peek() != ',' || !(cin.ignore()))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '*', ',', or ')'.\n";
+		if (cin.peek() != ',' || !(cin.ignore())) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '*', ',', or ')'.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
 
-		if (!(cin >> n))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected an integer.\n";
+		if (!(cin >> n)) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected an integer.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
 		c = (cin.peek() == '*');
-		if (cin.peek() == '*')
-		{
+		if (cin.peek() == '*') {
 			cin.ignore();
 			cin >> std::ws;
 		}
 		m.c = sanitize(n, c);
 
-		if (cin.peek() != ',' || !(cin.ignore()))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '*' or ','.\n";
+		if (cin.peek() != ',' || !(cin.ignore())) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '*' or ','.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
-		if (!(cin >> n))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected an integer.\n";
+		if (!(cin >> n)) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected an integer.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
 		c = (cin.peek() == '*');
-		if (cin.peek() == '*')
-		{
+		if (cin.peek() == '*') {
 			cin.ignore();
 			cin >> std::ws;
 		}
 		m.d = sanitize(n, c);
 
-		if (cin.peek() != ')' || !(cin.ignore()))
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '*' or ')'.\n";
+		if (cin.peek() != ')' || !(cin.ignore())) {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '*' or ')'.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> std::ws;
-		if (cin.peek() != '+' && cin.peek() != '-')
-		{
-			cerr << "Error: unexpected token '" << cin.peek() << "', expected '+' or '-'.\n";
+		if (cin.peek() != '+' && cin.peek() != '-') {
+			cerr << "Error: unexpected token '" << char(cin.peek()) << "', expected '+' or '-'.\n";
 			return EXIT_FAILURE;
 		}
 		cin >> m.p;
@@ -400,9 +365,7 @@ int main(int argc, char *argv[])
 		bool repeat = false;
 		for (int i = 0; i < monomer_types.size(); ++i)
 			if (monomers_equal(m, monomer_types[i]))
-			{
 				repeat = true;
-			}
 		if (!repeat)
 			monomer_types.push_back(m);
 	}

@@ -1,4 +1,6 @@
 /*
+Author: Andrew Winslow (andrewwinslow@gmail.com)
+
 Program for converting a grammar to a symbol-pair grammar
 following the algorithm described in the proof of Lemma 3.2 of
 http://arxiv.org/abs/1401.0359
@@ -9,7 +11,7 @@ The output symbol-pair grammar can be used as input to pg2is.
 
 The input grammar must consist of lines (delimited by '\n'),
 each with one of three forms:
-1. "# ..." (a comment)
+1. "# ..." (a comment) or " " (whitespace).
 2. "1 -> 2 3" (a number followed by "->" followed by two more numbers)
 3. "1 -> a" (a number followed by "->" followed by a letter) 
 The order of the lines does not matter.
