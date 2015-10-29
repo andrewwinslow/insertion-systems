@@ -1,29 +1,42 @@
 
-#include <stdbool.h>
+#ifndef PAIRGRAMMAR_H
+#define PAIRGRAMMAR_H
 
-#define MAX_PAIR_GRAMMAR_RULES 1000
+#include <vector>
 
-typedef struct {
-	int a, d;
-} Nonterminal;
+using std::vector;
 
-typedef struct {
-        bool is_terminal;
-	Nonterminal lhs;
-	Nonterminal rhs1, rhs2;
-	char rhsTerm;
-} Rule;
+class PairGrammar {
 
-typedef struct {
-        bool has_start;
-       	Nonterminal start; 
-        Rule rules[MAX_PAIR_GRAMMAR_RULES];
-        unsigned int rule_count;
-} PairGrammar;
+	public:
+		typedef struct {
+			int a, d;
+		} Nonterminal;
 
-bool rule_is_valid(Rule* r);
-bool pair_grammar_is_valid(PairGrammar* pg);
-void initialize_pair_grammar(PairGrammar* pg);
-void add_rule_to_pair_grammar(Rule r, PairGrammar* pg);
-void set_start(Nonterminal n, PairGrammar* pg);
+		typedef struct {
+			bool is_terminal;
+			Nonterminal lhs;
+			Nonterminal rhs1, rhs2;
+			char rhsTerm;
+		} Rule;
+
+		PairGrammar();
+		int start();
+		bool has_start();
+		bool is_valid();
+		void set_start(Nonterminal nt);
+		void add_rule(Rule r);
+		void print();
+		void print_insertion_system();
+		
+		static bool is_valid(Rule r);
+
+	private:
+		Nonterminal _start;
+		bool _has_start;
+		vector<Rule> rules;
+};
+
+#endif
+
 

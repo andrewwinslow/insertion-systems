@@ -14,19 +14,19 @@ simulator: simulator.cpp
 	$(CPP) $(CFLAGS) simulator.cpp -o simulator
 
 # Grammar and pair (symbol) grammar classes 
-grammar.o: grammar.cpp grammar.h
-	$(CPP) $(CFLAGS) -c grammar.cpp -o grammar.o
+pairgrammar.o: pairgrammar.cpp pairgrammar.h
+	$(CPP) $(CFLAGS) -c pairgrammar.cpp -o pairgrammar.o
 
-pairgrammar.o: pairgrammar.c pairgrammar.h
-	$(CC) $(CFLAGS) -c pairgrammar.c -o pairgrammar.o
+grammar.o: grammar.cpp grammar.h pairgrammar.o 
+	$(CPP) $(CFLAGS) -c grammar.cpp -o grammar.o
 
 # Programs for converting grammars to pair grammars (g2pg) 
 # and pair grammars to insertion systems (pg2is) as in the paper.
 g2pg: g2pg.cpp grammar.o
-	$(CPP) $(CFLAGS) -o g2pg g2pg.cpp grammar.o
+	$(CPP) $(CFLAGS) -o g2pg g2pg.cpp grammar.o pairgrammar.o
 
-pg2is: pg2is.c pairgrammar.o
-	$(CC) $(CFLAGS) -o pg2is pg2is.c pairgrammar.o
+pg2is: pg2is.cpp pairgrammar.o
+	$(CPP) $(CFLAGS) -o pg2is pg2is.cpp pairgrammar.o
 
 # Programs for generating instances of particular constructions.
 highambiguitypg: highambiguitypg.c

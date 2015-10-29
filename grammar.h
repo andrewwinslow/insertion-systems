@@ -2,20 +2,21 @@
 #ifndef GRAMMAR_H
 #define GRAMMAR_H
 
+#include "pairgrammar.h"
 #include <vector>
 
 using std::vector;
 
-typedef struct {
-        bool is_terminal;
-	int lhs;
-	int rhs1, rhs2;
-	char rhsTerm;
-} Rule;
-
 class Grammar {
 
 	public:
+		typedef struct {
+			bool is_terminal;
+			int lhs;
+			int rhs1, rhs2;
+			char rhsTerm;
+		} Rule;
+
 		Grammar();
 		int start();
 		bool has_start();	
@@ -23,9 +24,8 @@ class Grammar {
 		void set_start(int n);
 		void add_rule(Rule r);
 		void normalize();
-		void print_pg();
 		void print_grammar();
-		void print_pairgrammar();
+		PairGrammar pairgrammar();	
 	
 	private:
 		int _start;	

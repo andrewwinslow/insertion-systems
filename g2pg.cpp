@@ -37,7 +37,7 @@ void clean_line(string &l) {
 int main() {
 	Grammar g;
 
-	Rule tempRule;
+	Grammar::Rule tempRule;
 	string line;
         while (std::cin) {
 		getline(std::cin, line); 
@@ -80,7 +80,7 @@ int main() {
 	}
 	
 	// Compute and output the pair grammar
-	g.print_pairgrammar();
+	g.pairgrammar().print();
 
 	return EXIT_SUCCESS;
 }
