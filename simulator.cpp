@@ -168,7 +168,7 @@ void simulate() {
 		// if you've reached the end
 		if (site->next == NULL) {
 			if(vflag)
-				cout << "Terminal polymer: \n";
+				cout << "Terminal polymer:" << std::endl;
 			// print the polymer and pop the stack
 			print_polymer();
 			if(vflag)
@@ -215,8 +215,8 @@ void simulate() {
 			++type;	
 	}
 }
-   
- 
+
+
 int main(int argc, char *argv[]) {
 	// Parse command line arguments
 	for (int i = 1; i < argc; ++i) {

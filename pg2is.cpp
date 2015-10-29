@@ -12,12 +12,12 @@ The output symbol-pair grammar can be used as input to simulator.
 The input grammar must consist of lines (delimited by '\n'),
 each with one of three forms:
 1. "# ..." (a comment) or " " (whitespace).
-2. "(1, 2) -> (1, 3) (4, 1)" (an integer 2-tuple followed by "->" 
-                              followed by two integer 2-tuples whose 
-                              first and last letters match those of
-                              the first 2-tuple.)
-3. "(1, 2) -> a" (an integer 2-tuple number followed by "->" 
-                  followed by a letter.) 
+2. "(1, 2) -> (1, 3) (4, 1)"	(an integer 2-tuple followed by "->" 
+				followed by two integer 2-tuples whose 
+				first and last letters match those of
+				the first 2-tuple.)
+3. "(1, 2) -> a"	(an integer 2-tuple number followed by "->" 
+			followed by a letter.) 
 The order of the lines does not matter.
 */
 
@@ -38,7 +38,7 @@ void clean(char buf[]) {
 		else if(buf[i] == '-' || buf[i] == '>')
 			buf[i] = ' ';
 		// Tuple cruft 
- 		else if (buf[i] == ',' || buf[i] == '(' || buf[i] == ')')
+		else if (buf[i] == ',' || buf[i] == '(' || buf[i] == ')')
 			buf[i] = ' ';
 	}	
 }

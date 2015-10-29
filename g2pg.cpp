@@ -39,7 +39,7 @@ int main() {
 
 	Grammar::Rule tempRule;
 	string line;
-        while (std::cin) {
+	while (std::cin) {
 		getline(std::cin, line); 
 		clean_line(line);
 
