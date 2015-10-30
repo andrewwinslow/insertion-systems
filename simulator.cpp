@@ -9,6 +9,7 @@
 using std::cin;
 using std::cout;
 using std::cerr;
+using std::endl;
 using std::list;
 using std::string;
 using std::stack;
@@ -52,7 +53,7 @@ void insert_monomer(MonomerType t, Monomer* loc) {
 		cout << " into site ";
 		print_monomer(loc->type, false);
 		print_monomer(loc->next->type, false);
-		cout << std::endl;
+		cout << endl;
 	}
 
 	Monomer* new_monomer = (Monomer*) malloc(sizeof(Monomer));
@@ -139,7 +140,7 @@ bool insertable(MonomerType inserted, Monomer* loc) {
 
 void print_polymer() {
 	if(sflag) {
-		cout << "Polymer size: " << polymer_size << std::endl; 
+		cout << "Polymer size: " << polymer_size << endl; 
 		return;
 	}
 
@@ -155,7 +156,7 @@ void print_polymer() {
 		cur = cur->next;
 	}
 
-	cout << std::endl;
+	cout << endl;
 }		
 
 void simulate() {
@@ -168,7 +169,7 @@ void simulate() {
 		// if you've reached the end
 		if (site->next == NULL) {
 			if(vflag)
-				cout << "Terminal polymer:" << std::endl;
+				cout << "Terminal polymer:" << endl;
 			// print the polymer and pop the stack
 			print_polymer();
 			if(vflag)
@@ -229,7 +230,7 @@ int main(int argc, char *argv[]) {
 				vflag = true;
 				break;
 			default:
-				cout << "Error: illegal option '" << argv[i] << "'" << std::endl;
+				cout << "Error: illegal option '" << argv[i] << "'" << endl;
 				return EXIT_FAILURE;			
 			}
 		}
@@ -306,7 +307,7 @@ int main(int argc, char *argv[]) {
 
 				// Check that initiator has matching symbols
 				if (polymer->type.c != -polymer->next->type.b && polymer->type.d != -polymer->next->type.a) {
-					cerr << "Error: initiator has no bond." << std::endl;	
+					cerr << "Error: initiator has no bond." << endl;	
 					return EXIT_FAILURE;
 				}
 			}

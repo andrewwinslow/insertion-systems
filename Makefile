@@ -32,8 +32,8 @@ pg2is: pg2is.cpp pairgrammar.o
 highambiguitypg: highambiguitypg.c
 	$(CC) $(CFLAGS) -o highambiguitypg highambiguitypg.c
 
-fastgrowingpg: fastgrowingpg.c
-	$(CC) $(CFLAGS) -o fastgrowingpg fastgrowingpg.c
+fastgrowingpg: fastgrowingpg.cpp
+	$(CPP) $(CFLAGS) -o fastgrowingpg fastgrowingpg.cpp
 
 superfastgrowingis: superfastgrowingis.c
 	$(CC) $(CFLAGS) -o superfastgrowingis superfastgrowingis.c
