@@ -22,6 +22,9 @@ The order of the lines does not matter.
 #include <iostream>
 
 using std::string;
+using std::cin;
+using std::endl;
+using std::cerr;
 
 // Removes comment lines and right arrows parts ('-', '>')
 void clean_line(string &l) {
@@ -39,8 +42,8 @@ int main() {
 
 	Grammar::Rule tempRule;
 	string line;
-	while (std::cin) {
-		getline(std::cin, line); 
+	while (cin) {
+		getline(cin, line); 
 		clean_line(line);
 
 		if (sscanf(line.c_str(), "%d %d %d", &tempRule.lhs, &tempRule.rhs1, &tempRule.rhs2) == 3) {
@@ -59,7 +62,7 @@ int main() {
 		// Try to read the line as a start symbol (a, d)
 		if (sscanf(line.c_str(), "%d", &tempRule.lhs) == 1) {
 			if (g.has_start()) {
-				std::cerr << "Line was parsed as " << tempRule.lhs << ", but grammar already has start symbol." << std::endl;
+				cerr << "Line was parsed as " << tempRule.lhs << ", but grammar already has start symbol." << endl;
 				return EXIT_FAILURE;
 			}
 			g.set_start(tempRule.lhs);
@@ -68,7 +71,7 @@ int main() {
 
 		// Try to read the line as the end of the file
 		if (line.find_first_not_of("\n\t") != std::string::npos) {
-			std::cerr << "Line has stuff but can't be parsed:" << std::endl << line << std::endl;
+			cerr << "Line has stuff but can't be parsed:" << endl << line << endl;
 			return EXIT_FAILURE;
 		}	
 	}

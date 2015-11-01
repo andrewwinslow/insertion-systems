@@ -1,12 +1,15 @@
 
 #include "grammar.h"
 #include <algorithm>
+#include <iostream>
 
 using std::min;
 using std::max;
 using std::begin;
 using std::end;
 using std::vector;
+using std::cout;
+using std::endl;
 
 Grammar :: Grammar() {
 	_has_start = false;
@@ -184,13 +187,13 @@ PairGrammar Grammar :: pairgrammar() {
 void Grammar :: print_grammar() {
 	if (!is_valid())
 		return;
-
-	fprintf(stdout, "# Start symbol\n%d\n\n# Rules\n", _start);
+	
+	cout << "# Start symbol" << endl << _start << endl << endl << "# Rules" << endl << _start;
 	for (unsigned int i = 0; i < rules.size(); ++i) {
 		if (rules[i].is_terminal) 
-			fprintf(stdout, "%d -> %c\n", rules[i].lhs, rules[i].rhsTerm);
+			cout << rules[i].lhs << " -> " << rules[i].rhsTerm << endl;
 		else
-			fprintf(stdout, "%d -> %d %d\n", rules[i].lhs, rules[i].rhs1, rules[i].rhs2);
+			cout << rules[i].lhs << " -> " << rules[i].rhs1 << " " << rules[i].rhs2 << endl;
 	}
 }
 

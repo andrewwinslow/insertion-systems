@@ -7,7 +7,7 @@ CC=clang
 CPP=clang++
 CFLAGS=-Wall
 
-all: simulator pg2is g2pg fastgrowingpg highambiguitypg superfastgrowingis nondetermfastis 
+all: simulator pg2is g2pg fastgrowingpg superfastgrowingis nondetermfastis 
 
 # The main program that simulates insertion systems
 simulator: simulator.cpp
@@ -29,17 +29,14 @@ pg2is: pg2is.cpp pairgrammar.o
 	$(CPP) $(CFLAGS) -o pg2is pg2is.cpp pairgrammar.o
 
 # Programs for generating instances of particular constructions.
-highambiguitypg: highambiguitypg.c
-	$(CC) $(CFLAGS) -o highambiguitypg highambiguitypg.c
-
 fastgrowingpg: fastgrowingpg.cpp
 	$(CPP) $(CFLAGS) -o fastgrowingpg fastgrowingpg.cpp
 
 superfastgrowingis: superfastgrowingis.c
 	$(CC) $(CFLAGS) -o superfastgrowingis superfastgrowingis.c
 
-nondetermfastis: nondetermfastis.c
-	$(CC) $(CFLAGS) -o nondetermfastis nondetermfastis.c
+nondetermfastis: nondetermfastis.cpp
+	$(CPP) $(CFLAGS) -o nondetermfastis nondetermfastis.cpp
 
 # Billy Mays  
 clean:
