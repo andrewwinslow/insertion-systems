@@ -1,4 +1,5 @@
 # Should report an error about initiator having no bond
+
 (1, 2) (3*, 4*)
 (40, 1*, 1, 2)-
 (2*, 3, 4, 2)+

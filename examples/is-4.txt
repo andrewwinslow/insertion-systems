@@ -1,5 +1,5 @@
-# replicates construction from Lemma 4.1, with k = 1.
-# expecting terminal poly of length 2^2k + 1 = 5
+# Replicates construction from Theorem 4.1 of http://arxiv.org/abs/1401.0359 with k = 1.
+# Has a single terminal polymer of length 2^{2k} + 1 = 5.
 
 # initiator
 (30, 12)(22*, 30*)
@@ -10,3 +10,5 @@
 # i = 1
 (20*, 30*, 21, 10)-
 (20*, 11*, 30, 10)-
+
+

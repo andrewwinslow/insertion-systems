@@ -1,5 +1,5 @@
-# replicates construction from Lemma 4.1, with k = 2.
-# expecting terminal poly of length 17, so far got one of length 8
+# Replicates construction from Theorem 4.1 of http://arxiv.org/abs/1401.0359 with k = 2.
+# Has a single terminal polymer of length 2^{2k} + 1 = 17.
 
 # initiator
 (30, 14) (24*, 30*)

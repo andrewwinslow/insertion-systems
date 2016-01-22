@@ -7,7 +7,7 @@ CC=clang
 CPP=clang++
 CFLAGS=-Wall
 
-all: simulator pg2is g2pg fastgrowingpg superfastgrowingis nondetermfastis 
+all: simulator pg2is g2pg fastgrowingpg superfastgrowingis  
 
 # The main program that simulates insertion systems
 simulator: simulator.cpp
@@ -34,9 +34,6 @@ fastgrowingpg: fastgrowingpg.cpp
 
 superfastgrowingis: superfastgrowingis.c
 	$(CC) $(CFLAGS) -o superfastgrowingis superfastgrowingis.c
-
-nondetermfastis: nondetermfastis.cpp
-	$(CPP) $(CFLAGS) -o nondetermfastis nondetermfastis.cpp
 
 # Billy Mays  
 clean:
