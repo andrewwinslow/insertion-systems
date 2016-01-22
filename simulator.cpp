@@ -33,9 +33,6 @@ typedef struct {
 	int type;
 } Insertion;
 
-
-
-
 static vector<MonomerType> monomer_types;
 static Monomer* polymer;
 static int polymer_size;
@@ -45,7 +42,6 @@ static bool vflag = false; /* verbose flag (print each insertion) */
 
 void print_monomer(MonomerType monomer, bool sign);
 
-// inserts after
 void insert_monomer(MonomerType t, Monomer* loc) {
 	if(vflag) {
 		cout << "Inserting ";
@@ -107,9 +103,8 @@ void print_monomer_lh(MonomerType monomer) {
 }
 
 void print_monomer(MonomerType monomer, bool sign) {
-	// Naming: left hand init monomer is printed by
-	// printing its right two symbols, 
-	// so currently rh is called, etc.
+	// Naming: left hand init monomer has only right two symbols printed, 
+	// so the "print..rh" function is called. Similar for left.
 	if(monomer.p == 'l')
 		return print_monomer_rh(monomer); 
 	if(monomer.p == 'r')                      
@@ -219,20 +214,25 @@ void simulate() {
 
 
 int main(int argc, char *argv[]) {
-	// Parse command line arguments
+	// Parse command line arguments	
 	for (int i = 1; i < argc; ++i) {
-		if (argv[i][0] == '-') {
-			switch (argv[i][1]) {
-			case 's':
-				sflag = true;
-				break;
-			case 'v':
-				vflag = true;
-				break;
-			default:
-				cout << "Error: illegal option '" << argv[i] << "'" << endl;
-				return EXIT_FAILURE;			
-			}
+		string arg = argv[i];
+
+		if (arg[0] != '-') {
+			cout << "Error: illegal option '" << argv[i] << "'" << endl;
+			return EXIT_FAILURE;			
+		}
+
+		if (arg == "-s")
+			sflag = true;
+		else if (arg == "-v")
+			vflag = true;
+		else if (arg == "--help" || arg == "-help" || arg == "-h") {
+			cout << "Command line arguments:" << endl;
+			cout << "    -v             output entire step-by-step insertion process" << endl;
+			cout << "    -s             output only sizes of terminal polymers      " << endl;
+			cout << "    -h, -help      print program information                   " << endl;
+			cout << "        --help                                                 " << endl;
 		}
 	}	
 
